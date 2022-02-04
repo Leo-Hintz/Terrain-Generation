@@ -1,0 +1,12 @@
+[submodule = "GLFW"]
+	path = Terrain Generation/vendor/GLFW
+	url = https://github.com/glfw/glfw
+[submodule = "GLEW"]
+	path = Terrain Generation/vendor/GLEW
+	url = https://github.com/nigels-com/glew
+[submodule = "ASSIMP"]
+	path = Terrain Generation/vendor/ASSIMP
+	url = https://github.com/assimp/assimp
+[submodule = "STB_IMAGE"]
+	path = Terrain Generation/vendor/STB_IMAGE
+	url = https://github.com/nothings/stb
