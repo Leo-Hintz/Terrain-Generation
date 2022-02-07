@@ -7,3 +7,6 @@
 [submodule "Terrain Generation/vendor/STB_IMAGE"]
 	path = Terrain Generation/vendor/STB_IMAGE
 	url = https://github.com/nothings/stb
+[submodule "Terrain Generation\\vendor/GLM"]
+	path = Terrain Generation\\vendor/GLM
+	url = https://github.com/g-truc/glm

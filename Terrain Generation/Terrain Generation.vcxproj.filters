@@ -29,5 +29,11 @@
     <ClInclude Include="Window.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\STB_IMAGE\stb_image.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

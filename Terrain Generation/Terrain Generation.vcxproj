@@ -86,15 +86,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;STB_IMAGE_IMPLEMENTATION</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\include\;$(SolutionDir)/Terrain Generation\vendor/GLEW/include;$(SolutionDir)/Terrain Generation\vendor/GLFW/include;$(SolutionDir)/Terrain Generation\vendor/STB_IMAGE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\include\;$(SolutionDir)/Terrain Generation\vendor/GLEW/include;$(SolutionDir)/Terrain Generation\vendor/GLFW/include;$(SolutionDir)/Terrain Generation\vendor/STB_IMAGE;$(SolutionDir)/Terrain Generation\vendor/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\build\lib\Release;$(SolutionDir)/Terrain Generation\vendor\GLEW/lib/Release/x64;$(SolutionDir)/Terrain Generation\vendor/GLFW/build/src/Release;$(SolutionDir)/Terrain Generation\vendor\ASSIMP\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc142-mt.lib;glfw3.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;assimp-vc142-mt.lib;glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -103,9 +103,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;STB_IMAGE_IMPLEMENTATION</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\include\;$(SolutionDir)/Terrain Generation\vendor/GLEW/include;$(SolutionDir)/Terrain Generation\vendor/GLFW/include;$(SolutionDir)/Terrain Generation\vendor/STB_IMAGE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\include\;$(SolutionDir)/Terrain Generation\vendor/GLEW/include;$(SolutionDir)/Terrain Generation\vendor/GLFW/include;$(SolutionDir)/Terrain Generation\vendor/STB_IMAGE;$(SolutionDir)/Terrain Generation\vendor/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -113,22 +113,22 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\build\lib\Release;$(SolutionDir)/Terrain Generation\vendor\GLEW/lib/Release/x64;$(SolutionDir)/Terrain Generation\vendor/GLFW/build/src/Release;$(SolutionDir)/Terrain Generation\vendor\ASSIMP\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc142-mt.lib;glfw3.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;assimp-vc142-mt.lib;glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;STB_IMAGE_IMPLEMENTATION</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\include\;$(SolutionDir)/Terrain Generation\vendor/GLEW/include;$(SolutionDir)/Terrain Generation\vendor/GLFW/include;$(SolutionDir)/Terrain Generation\vendor/STB_IMAGE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\include\;$(SolutionDir)/Terrain Generation\vendor/GLEW/include;$(SolutionDir)/Terrain Generation\vendor/GLFW/include;$(SolutionDir)/Terrain Generation\vendor/STB_IMAGE;$(SolutionDir)/Terrain Generation\vendor/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\build\lib\Release;$(SolutionDir)/Terrain Generation\vendor\GLEW/lib/Release/x64;$(SolutionDir)/Terrain Generation\vendor/GLFW/build/src/Release;$(SolutionDir)/Terrain Generation\vendor\ASSIMP\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc142-mt.lib;glfw3.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;assimp-vc142-mt.lib;glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -137,9 +137,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;STB_IMAGE_IMPLEMENTATION</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\include\;$(SolutionDir)/Terrain Generation\vendor/GLEW/include;$(SolutionDir)/Terrain Generation\vendor/GLFW/include;$(SolutionDir)/Terrain Generation\vendor/STB_IMAGE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\include\;$(SolutionDir)/Terrain Generation\vendor/GLEW/include;$(SolutionDir)/Terrain Generation\vendor/GLFW/include;$(SolutionDir)/Terrain Generation\vendor/STB_IMAGE;$(SolutionDir)/Terrain Generation\vendor/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,7 +147,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/Terrain Generation\vendor\ASSIMP\build\lib\Release;$(SolutionDir)/Terrain Generation\vendor\GLEW/lib/Release/x64;$(SolutionDir)/Terrain Generation\vendor/GLFW/build/src/Release;$(SolutionDir)/Terrain Generation\vendor\ASSIMP\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc142-mt.lib;glfw3.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;assimp-vc142-mt.lib;glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -156,6 +156,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="vendor\STB_IMAGE\stb_image.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
