@@ -19,5 +19,5 @@ void main()
 		
 	if (posY > 0.5)  col = vec4(1.0,1.0,1.0, 1) * vec4(posY, posY, posY, 1); 
 	
-	col = texture(colorTexture, tex) * vec4(posY, posY, posY, 1);
+	col *= texture(colorTexture, tex);
 }

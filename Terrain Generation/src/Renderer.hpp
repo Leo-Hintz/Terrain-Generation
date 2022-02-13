@@ -10,9 +10,11 @@
 #include <string>
 #include <stdio.h>
 #include <queue>
+#include <array>
 
 #include "Window.h"
 #include "Mesh.h"
+
 #pragma warning(disable:4996) //Disable warning in order to be able to use C-style file system
 
 
@@ -29,6 +31,10 @@ private:
 class CubeMap
 {
 public:
+	CubeMap(std::array<const char*, 6> directories);
+	const GLuint& GetTexID() { return m_TextureID; }
+private:
+	GLuint m_TextureID;
 };
 
 
@@ -82,8 +88,8 @@ private:
 	glm::mat4 m_ProjectionMatrix;
 	glm::mat4 m_ViewMatrix;
 	bool m_CursorDisabled = false;
-	float yaw = 0, pitch = 0;
-	glm::vec3 m_Pos{}, m_Dir{0, 0,-1}, m_Right{1, 0, 0}, m_Up{0, 1, 0};
+	float yaw = -90.0f, pitch = 0;
+	glm::vec3 m_Pos{}, m_Dir{0, 0,-1}, m_Right{-1, 0, 0}, m_Up{0, 1, 0};
 };
 
 class Renderer

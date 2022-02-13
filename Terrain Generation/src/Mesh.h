@@ -131,11 +131,51 @@ private:
 	uint32_t m_Height;
 };
 
+static uint32_t skyBoxIndices[36] =
+{
+	0, 1, 3, 3, 1, 2,
+	1, 5, 2, 2, 5, 6,
+	5, 4, 6, 6, 4, 7,
+	4, 0, 7, 7, 0, 3,
+	3, 2, 7, 7, 2, 6,
+	4, 5, 0, 0, 5, 1
+};
+static Vertex skyBoxVertices[8] =
+{
+	{{-1,-1,-1, 1},{0,0},{}},
+	{{1,-1,-1,1},{1,0},{}},
+	{{1,1,-1,1},{1,1},{}},
+	{{-1,1,-1,1},{0,1},{}},
+	{{-1,-1,1,1},{0,0},{}},
+	{{1,-1,1,1},{1,0},{}},
+	{{1,1,1,1},{1,1},{}},
+	{{-1,1,1,1},{0,0},{}}
+};
+
 class Skybox : Mesh
 {
 public:
 	static Skybox* CreateSkybox(const char* directory)
 	{
 		Skybox* skybox = (Skybox*)malloc(sizeof(Skybox));
+		glGenVertexArrays(1, &skybox->m_VertexArray);
+		glBindVertexArray(skybox->m_VertexArray);
+
+		glGenBuffers(1, &skybox->m_VertexBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, skybox->m_VertexBuffer);
+		glBufferData(GL_ARRAY_BUFFER, skybox->m_VertexCount * sizeof(Vertex), skyBoxVertices, GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(glm::vec4));
+		glEnableVertexAttribArray(1);
+
+
+		glGenBuffers(1, &skybox->m_IndexBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skybox->m_IndexBuffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, skybox->m_IndexCount * sizeof(uint32_t), skyBoxIndices, GL_STATIC_DRAW);
+
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 };

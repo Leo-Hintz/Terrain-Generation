@@ -172,8 +172,6 @@ void CameraController::OnUpdate(Window* window)
 	}
 	if (!(window->GetData().cursorPos == window->GetData().oldCursorPos))
 	{
-
-
 		yaw += window->GetData().cursorPos.x - window->GetData().oldCursorPos.x;
 		pitch += window->GetData().oldCursorPos.y - window->GetData().cursorPos.y;
 
@@ -244,7 +242,7 @@ Terrain* TerrainGenerator::GenerateTerrainMap(const char* imageDirectory)
 	{
 		for (int j = 0; j < x; j++)
 		{
-			vertices[(x * i) + j] = { {-y / 2 + i ,(data[(j + x * i) * channels]) / 7, -x / 2 + j, 1}, {float(x-i)/x, float(y-j)/y}, {} };
+			vertices[(x * i) + j] = { {-y / 2 + i ,(data[(j + x * i) * channels]) / 4 , -x / 2 + j, 1}, {float(x-i)/x, float(y-j)/y}, {} };
 		}
 	}
 	uint32_t* indices = (uint32_t*)malloc(sizeof(uint32_t) * x * y * 2 - 1);
@@ -263,4 +261,24 @@ Terrain* TerrainGenerator::GenerateTerrainMap(const char* imageDirectory)
 	Terrain* mesh = Terrain::CreateTerrain(vertices, x, indices, y);
 	stbi_image_free(data);
 	return mesh;
+}
+
+CubeMap::CubeMap(std::array<const char*, 6> directories)
+{
+	
+	glGenTextures(1, &m_TextureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	unsigned char* data;
+	int width, height, nChannels;
+	for (int i = 0; i < 6; ++i)
+	{
+		data = stbi_load(directories[i], &width, &height, &nChannels, 0);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	}
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
