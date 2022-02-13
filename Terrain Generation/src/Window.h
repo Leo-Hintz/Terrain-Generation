@@ -2,12 +2,15 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <iostream>
+#include <glm/glm.hpp>
 
 struct WindowData
 {
 	bool closed;
 	uint32_t x;
 	uint32_t y;
+	glm::vec2 cursorPos;
+	glm::vec2 oldCursorPos;
 };
 
 class Window
@@ -37,7 +40,13 @@ public:
 				WindowData* windowData = (WindowData*)glfwGetWindowUserPointer(window);
 				windowData->closed = true;
 			});
+		glfwSetCursorPosCallback(window->m_Window, [](GLFWwindow* window, double x, double y) 
+			{
+				WindowData* windowData = (WindowData*)glfwGetWindowUserPointer(window);
+				windowData->cursorPos = { x,y };
+			});
 		glfwMakeContextCurrent(window->m_Window);
+		glfwSetInputMode(window->m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
 		return window;
 	}
@@ -45,12 +54,15 @@ public:
 	{
 		return m_Data.closed;
 	}
+	GLFWwindow* GetWindow() { return m_Window; }
 	void OnUpdate()
 	{
+		m_Data.oldCursorPos = m_Data.cursorPos;
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
+	const WindowData& GetData() { return m_Data; }
 private:
 	Window(uint32_t width, uint32_t height, const char* title)
 	{
