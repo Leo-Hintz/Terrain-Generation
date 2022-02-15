@@ -131,6 +131,13 @@ private:
 	uint32_t m_Height;
 };
 
+struct TexVertex3D
+{
+	glm::vec4 pos;
+	glm::vec3 tex;
+	glm::vec3 norm;
+};
+
 static uint32_t skyBoxIndices[36] =
 {
 	0, 1, 3, 3, 1, 2,
@@ -140,42 +147,81 @@ static uint32_t skyBoxIndices[36] =
 	3, 2, 7, 7, 2, 6,
 	4, 5, 0, 0, 5, 1
 };
-static Vertex skyBoxVertices[8] =
+static float skyBoxVertices[36 * 4] =
 {
-	{{-1,-1,-1, 1},{0,0},{}},
-	{{1,-1,-1,1},{1,0},{}},
-	{{1,1,-1,1},{1,1},{}},
-	{{-1,1,-1,1},{0,1},{}},
-	{{-1,-1,1,1},{0,0},{}},
-	{{1,-1,1,1},{1,0},{}},
-	{{1,1,1,1},{1,1},{}},
-	{{-1,1,1,1},{0,0},{}}
+		-1.0f, -1.0f, -1.0f,1,
+		1.0f, -1.0f, -1.0f,1,
+		1.0f,  1.0f, -1.0f, 1,
+		1.0f,  1.0f, -1.0f, 1,
+		-1.0f,  1.0f, -1.0f,1,
+		-1.0f, -1.0f, -1.0f,1,
+
+		-1.0f, -1.0f,  1.0f,1,
+		1.0f, -1.0f,  1.0f,1,
+		1.0f,  1.0f,  1.0f,1,
+		1.0f,  1.0f,  1.0f,1,
+		-1.0f,  1.0f,  1.0f,1,
+		-1.0f, -1.0f,  1.0f,1,
+
+		-1.0f,  1.0f,  1.0f,1,
+		-1.0f,  1.0f, -1.0f,1,
+		-1.0f, -1.0f, -1.0f,1,
+		-1.0f, -1.0f, -1.0f,1,
+		-1.0f, -1.0f,  1.0f,1,
+		-1.0f,  1.0f,  1.0f,1,
+
+		1.0f,  1.0f,  1.0f,1,
+		1.0f,  1.0f, -1.0f,1,
+		1.0f, -1.0f, -1.0f,1,
+		1.0f, -1.0f, -1.0f,1,
+		1.0f, -1.0f,  1.0f,1,
+		1.0f,  1.0f,  1.0f,1,
+
+		-1.0f, -1.0f, -1.0f,1,
+		1.0f, -1.0f, -1.0f,1,
+		1.0f, -1.0f,  1.0f,1,
+		1.0f, -1.0f,  1.0f,1,
+		-1.0f, -1.0f,  1.0f,1,
+		-1.0f, -1.0f, -1.0f,1,
+
+		-1.0f,  1.0f, -1.0f,1,
+		1.0f,  1.0f, -1.0f,1,
+		1.0f,  1.0f,  1.0f,1,
+		1.0f,  1.0f,  1.0f,1,
+		-1.0f,  1.0f,  1.0f,1,
+		-1.0f,  1.0f, -1.0f,1
 };
 
-class Skybox : Mesh
+class Cube
 {
 public:
-	static Skybox* CreateSkybox(const char* directory)
+	static Cube* CreateSkybox()
 	{
-		Skybox* skybox = (Skybox*)malloc(sizeof(Skybox));
-		glGenVertexArrays(1, &skybox->m_VertexArray);
-		glBindVertexArray(skybox->m_VertexArray);
+		Cube* cube = (Cube*)malloc(sizeof(Cube));
+		cube->m_Indices = skyBoxIndices;
+		cube->m_Vertices = skyBoxVertices;
+		glGenVertexArrays(1, &cube->m_VertexArray);
+		glBindVertexArray(cube->m_VertexArray);
 
-		glGenBuffers(1, &skybox->m_VertexBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, skybox->m_VertexBuffer);
-		glBufferData(GL_ARRAY_BUFFER, skybox->m_VertexCount * sizeof(Vertex), skyBoxVertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+		glGenBuffers(1, &cube->m_VertexBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, cube->m_VertexBuffer);
+		glBufferData(GL_ARRAY_BUFFER, 36 * sizeof(float)*4, cube->m_Vertices, GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float)*4, 0);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(glm::vec4));
-		glEnableVertexAttribArray(1);
-
-
-		glGenBuffers(1, &skybox->m_IndexBuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skybox->m_IndexBuffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, skybox->m_IndexCount * sizeof(uint32_t), skyBoxIndices, GL_STATIC_DRAW);
+		glDisableVertexAttribArray(1);
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		return cube;
 	}
+	void Use()
+	{
+		glBindVertexArray(m_VertexArray);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+	}
+private:
+	GLuint m_VertexBuffer;
+	GLuint m_VertexArray;
+	float* m_Vertices;
+	uint32_t* m_Indices;
 };

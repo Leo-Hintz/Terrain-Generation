@@ -11,7 +11,7 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    posY = 4*pos.y/256;
+    posY = 20*pos.y/256;
     texPos = tex;
     gl_Position = projectionMatrix * viewMatrix * pos;
 }

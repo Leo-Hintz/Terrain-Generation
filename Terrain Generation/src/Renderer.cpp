@@ -127,11 +127,6 @@ void CameraController::Use()
 	glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(m_ProjectionMatrix));
 }
 
-void CameraController::Move(float x, float y, float z)
-{
-	
-}
-
 void CameraController::OnUpdate(Window* window)
 {
 	if (glfwGetKey(window->GetWindow(), GLFW_KEY_ESCAPE))
@@ -148,27 +143,27 @@ void CameraController::OnUpdate(Window* window)
 		return;
 	if (glfwGetKey(window->GetWindow(), GLFW_KEY_W))
 	{
-		m_Pos += normalize(glm::vec3(m_Dir.x, 0, m_Dir.z));
+		m_Pos += normalize(glm::vec3(m_Dir.x, 0, m_Dir.z)) * (Time::GetDeltaTime() * 10);
 	}
 	if (glfwGetKey(window->GetWindow(), GLFW_KEY_S))
 	{
-		m_Pos -= normalize(glm::vec3(m_Dir.x, 0, m_Dir.z));
+		m_Pos -= normalize(glm::vec3(m_Dir.x, 0, m_Dir.z)) * (Time::GetDeltaTime() * 10);
 	}
 	if (glfwGetKey(window->GetWindow(), GLFW_KEY_A))
 	{
-		m_Pos -= m_Right;
+		m_Pos -= m_Right * (Time::GetDeltaTime() * 10);
 	}
 	if (glfwGetKey(window->GetWindow(), GLFW_KEY_D))
 	{
-		m_Pos += m_Right;
+		m_Pos += m_Right * (Time::GetDeltaTime() * 10);
 	}
 	if (glfwGetKey(window->GetWindow(), GLFW_KEY_LEFT_CONTROL))
 	{
-		--m_Pos.y;
+		m_Pos.y -= (Time::GetDeltaTime() * 10);
 	}
 	if (glfwGetKey(window->GetWindow(), GLFW_KEY_SPACE))
 	{
-		++m_Pos.y;
+		m_Pos.y += (Time::GetDeltaTime() * 10);
 	}
 	if (!(window->GetData().cursorPos == window->GetData().oldCursorPos))
 	{
@@ -223,6 +218,20 @@ void Renderer::Render(Mesh* mesh, Shader* shader, CameraController* cameraContro
 	m_Meshlist.pop();
 }
 
+void Renderer::RenderSkybox(Cube* skybox, Shader* shader, CameraController* cameraController, CubeMap* map)
+{
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	shader->Use();
+	skybox->Use();
+	shader->BindCubemap0(map->GetTexID());
+	shader->SetMat3("viewMatrix", glm::value_ptr(glm::mat3(cameraController->GetViewMatrix())));
+	shader->SetMat4("projectionMatrix", glm::value_ptr(cameraController->GetProjectionMatrix()));
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+}
+
 void Renderer::Submit(Mesh* mesh)
 {
 	m_Meshlist.push(mesh);
@@ -240,9 +249,9 @@ Terrain* TerrainGenerator::GenerateTerrainMap(const char* imageDirectory)
 	Vertex* vertices = (Vertex*)malloc(sizeof(Vertex) * x * y);
 	for (int i = 0; i < y; i++)
 	{
-		for (int j = 0; j < x; j++)
+		for(int j = 0; j < x; j++)
 		{
-			vertices[(x * i) + j] = { {-y / 2 + i ,(data[(j + x * i) * channels]) / 4 , -x / 2 + j, 1}, {float(x-i)/x, float(y-j)/y}, {} };
+			vertices[(x * i) + j] = { {-y / 2 + i ,(data[(j + x * i) * channels]) / 20 , -x / 2 + j, 1}, {float(x-i)/x, float(y-j)/y}, {} };
 		}
 	}
 	uint32_t* indices = (uint32_t*)malloc(sizeof(uint32_t) * x * y * 2 - 1);
@@ -265,7 +274,6 @@ Terrain* TerrainGenerator::GenerateTerrainMap(const char* imageDirectory)
 
 CubeMap::CubeMap(std::array<const char*, 6> directories)
 {
-	
 	glGenTextures(1, &m_TextureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -281,4 +289,5 @@ CubeMap::CubeMap(std::array<const char*, 6> directories)
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	}
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	stbi_image_free(data);
 }

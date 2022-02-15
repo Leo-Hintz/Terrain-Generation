@@ -14,6 +14,7 @@
 
 #include "Window.h"
 #include "Mesh.h"
+#include "Timer.h"
 
 #pragma warning(disable:4996) //Disable warning in order to be able to use C-style file system
 
@@ -64,6 +65,16 @@ public:
 	void BindTex2D6(const GLuint& id) { glActiveTexture(GL_TEXTURE6); glBindTexture(GL_TEXTURE_2D, id); }
 	void BindTex2D7(const GLuint& id) { glActiveTexture(GL_TEXTURE7); glBindTexture(GL_TEXTURE_2D, id); }
 	void BindTex2D8(const GLuint& id) { glActiveTexture(GL_TEXTURE8); glBindTexture(GL_TEXTURE_2D, id); }
+
+	void BindCubemap0(const GLuint& id) { glActiveTexture(GL_TEXTURE0); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
+	void BindCubemap1(const GLuint& id) { glActiveTexture(GL_TEXTURE1); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
+	void BindCubemap2(const GLuint& id) { glActiveTexture(GL_TEXTURE2); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
+	void BindCubemap3(const GLuint& id) { glActiveTexture(GL_TEXTURE3); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
+	void BindCubemap4(const GLuint& id) { glActiveTexture(GL_TEXTURE4); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
+	void BindCubemap5(const GLuint& id) { glActiveTexture(GL_TEXTURE5); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
+	void BindCubemap6(const GLuint& id) { glActiveTexture(GL_TEXTURE6); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
+	void BindCubemap7(const GLuint& id) { glActiveTexture(GL_TEXTURE7); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
+	void BindCubemap8(const GLuint& id) { glActiveTexture(GL_TEXTURE8); glBindTexture(GL_TEXTURE_CUBE_MAP, id); }
 private:
 	GLuint m_Program;
 	GLuint m_VertexShader;
@@ -75,21 +86,19 @@ class CameraController
 public:
 	CameraController(float width, float height)
 	{
-		m_ProjectionMatrix = glm::perspective(90.0f, width / height, 0.1f, 800.0f);
+		m_ProjectionMatrix = glm::perspective(glm::radians(90.0f), width / height, 0.1f, 800.0f);
 		m_ViewMatrix = glm::lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 	}
 	const glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
 	const glm::mat4& GetProjectionMatrix() { return m_ProjectionMatrix; }
 	void Use();
-	void Move(float x, float y, float z);
-	void Rotate(int x, int y);
 	void OnUpdate(Window* window);
 private:
 	glm::mat4 m_ProjectionMatrix;
 	glm::mat4 m_ViewMatrix;
 	bool m_CursorDisabled = false;
 	float yaw = -90.0f, pitch = 0;
-	glm::vec3 m_Pos{}, m_Dir{0, 0,-1}, m_Right{-1, 0, 0}, m_Up{0, 1, 0};
+	glm::vec3 m_Pos{}, m_Dir{0, 0,-1}, m_Right{1, 0, 0}, m_Up{0, 1, 0};
 };
 
 class Renderer
@@ -98,6 +107,7 @@ public:
 	static void Init();
 	static void Render(Terrain* terrainMesh, Shader* shader, CameraController* cameraControlller, Texture* texture);
 	static void Render(Mesh* mesh, Shader* shader, CameraController* cameraController, Texture* texture);
+	static void RenderSkybox(Cube* skybox, Shader* shader, CameraController* cameraController, CubeMap* map);
 	static void Submit(Mesh* mesh);
 	static void Submit(Terrain* terrainMesh);
 	static std::queue<Mesh*> m_Meshlist;

@@ -2,20 +2,27 @@
 #include "Renderer.hpp"
 #include "Window.h"
 #include "Mesh.h"
+#include "Timer.h"
+
+constexpr int WIDTH = 1280, HEIGHT = 720;
 
 void Application::Run()
 {
 	
 	Window::Init();
-	Window* window = Window::CreateWindow(1920, 1080, "Window");
+	Window* window = Window::CreateWindow(WIDTH, HEIGHT, "Window");
 	
 	Renderer::Init();
 	Shader shader;
 	shader.AttachVertexShader("Shaders/shader.vert");
 	shader.AttachFragmentShader("Shaders/shader.frag");
 	shader.LinkShaders();
-
-	CameraController cameraController = CameraController(1920, 1080);
+	Shader skyboxShader;
+	skyboxShader.AttachVertexShader("Shaders/Skyboxshader.vert");
+ 	skyboxShader.AttachFragmentShader("Shaders/Skyboxshader.frag");
+	skyboxShader.LinkShaders();
+	
+	CameraController cameraController = CameraController(WIDTH, HEIGHT);
 	uint32_t indices[36] =
 	{
 		0, 1, 3, 3, 1, 2,
@@ -36,16 +43,29 @@ void Application::Run()
 		{{1,1,1,1},{1,1},{}},
 		{{-1,1,1,1},{0,0},{}}
 	};
+
+	std::array<const char*, 6> skyboxTextures
+	{
+		"Textures/skybox/right.jpg",		
+		"Textures/skybox/left.jpg",
+		"Textures/skybox/top.jpg",
+		"Textures/skybox/bottom.jpg",
+		"Textures/skybox/front.jpg",
+		"Textures/skybox/back.jpg",
+		
+	};
 	Terrain* terrain = TerrainGenerator::GenerateTerrainMap("Textures/Heightmap.jpg");
 	Mesh* mesh = Mesh::CreateMesh(vertices, 8, indices, 36);
-	Texture tex = Texture("Textures/Flag_of_Australia.svg.png");
+	Cube* skybox = Cube::CreateSkybox();
+	Texture tex = Texture("Textures/Default.jpg");
+	CubeMap cubeMap = CubeMap(skyboxTextures);
 
 	//Main loop
 	while (!window->ShouldBeClosed())
 	{
 		terrain->Draw();
 		mesh->Draw();
-
+		Renderer::RenderSkybox(skybox, &skyboxShader, &cameraController, &cubeMap);
 		for(int i = 0; i < Renderer::m_Meshlist.size(); ++i)
 		Renderer::Render(Renderer::m_Meshlist.front(), &shader, &cameraController, &tex);
 		for (int i = 0; i < Renderer::m_Terrainlist.size(); ++i)
@@ -53,6 +73,7 @@ void Application::Run()
 
 		cameraController.OnUpdate(window);
 		window->OnUpdate();
+		Time::OnUpdate();
 	}
 	delete window;
 	Window::Terminate();
